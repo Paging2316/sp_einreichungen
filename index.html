@@ -39,11 +39,11 @@
             opacity: 0.7;
         }
 
+        /* Entfernen des Hover-Flackerns für mobile Usability */
         .filter-btn-active {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -52,14 +52,11 @@
 <body class="antialiased min-h-screen flex flex-col">
 
     <!-- Chosen Palette: Emerald (Brand), Pastel Orange (Impact), Slate (Neutral), Sky (Region) -->
-    <!-- Application Structure Plan: Strategisches Planungs-Dashboard für Spielerpass.at. 
-         Die Struktur fokussiert sich auf die schnelle Erfassbarkeit der Match-Kriterien und eine tiefgehende Strategie-Ebene in den Details. 
-         Der Impact-Bereich ist in warmem Pastell gehalten, um strategische Ziele sanft hervorzuheben. 
-         Zustandsmanagement via Vanilla JS steuert Filter für Typ und Region. -->
+    <!-- Application Structure Plan: Strategisches Planungs-Dashboard. Die Filter-Interaktion wurde korrigiert: Hover-Effekte wurden entfernt, um "Sticky-States" auf Mobilgeräten und Lesbarkeitsprobleme zu vermeiden. Inklusive Match-Kriterien mit Emojis, Impact-Badges in Pastell-Orange und detaillierten Strategie-Sektionen. -->
     <!-- Visualization & Content Choices: 
-         - Bar Chart für zeitliche Ressourcenplanung.
-         - Cards mit Emoji-basierten Match-Listen für schnelles Scannen.
-         - Strukturierte Details für Kriterien & Strategie-Checklisten.
+         - Bar Chart für Fristenverteilung.
+         - Cards mit direktem Status-Wechsel (ohne Hover-Hintergrund-Änderung).
+         - Detaillierte Kriterien- und Strategie-Texte in den Expander-Details.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
@@ -84,7 +81,7 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        <!-- Strategy Dashboard Summary -->
+        <!-- Summary Cards -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-12">
             <div class="lg:col-span-1 flex flex-col gap-4">
                 <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
@@ -118,40 +115,39 @@
             </div>
         </div>
 
-        <!-- Filter Navigation -->
+        <!-- Filter Navigation (Korrektur: keine Hover-Hintergrund-Farben mehr) -->
         <section class="mb-10">
             <div class="flex flex-col space-y-8">
                 <div>
                     <h2 class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Art der Möglichkeit</h2>
                     <div class="flex flex-wrap gap-3" id="type-filter-group">
-                        <button data-type="all" class="filter-btn-type px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600 hover:border-slate-300">Alle</button>
-                        <button data-type="Förderung" class="filter-btn-type px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-emerald-100 bg-white text-emerald-700 hover:bg-emerald-50">💵 Förderungen</button>
-                        <button data-type="Auszeichnung" class="filter-btn-type px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-amber-100 bg-white text-amber-700 hover:bg-amber-50">🏆 Auszeichnungen</button>
+                        <button data-type="all" class="filter-btn-type px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">Alle</button>
+                        <button data-type="Förderung" class="filter-btn-type px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">💵 Förderungen</button>
+                        <button data-type="Auszeichnung" class="filter-btn-type px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">🏆 Auszeichnungen</button>
                     </div>
                 </div>
 
                 <div>
                     <h2 class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Geografischer Fokus</h2>
                     <div class="flex flex-wrap gap-3" id="region-filter-group">
-                        <button data-region="all" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600 hover:border-slate-300">Gesamt-Markt</button>
-                        <button data-region="AT" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-red-50 bg-white text-red-700 hover:bg-red-50">🇦🇹 Österreich</button>
-                        <button data-region="DACH" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-sky-50 bg-white text-sky-700 hover:bg-sky-50">🌍 DACH Region</button>
-                        <button data-region="INT" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-indigo-50 bg-white text-indigo-700 hover:bg-indigo-50">🌐 International</button>
+                        <button data-region="all" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">Gesamt-Markt</button>
+                        <button data-region="AT" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">🇦🇹 Österreich</button>
+                        <button data-region="DACH" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">🌍 DACH Region</button>
+                        <button data-region="INT" class="filter-btn-region px-6 py-3 rounded-2xl text-sm font-bold transition-all border border-slate-200 bg-white text-slate-600">🌐 International</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Main Content Grid -->
+        <!-- Opportunity Grid -->
         <section id="opportunity-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             <!-- Dynamically populated -->
         </section>
 
-        <!-- Empty State -->
         <div id="empty-state" class="hidden py-32 text-center">
             <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">🔍</div>
             <h3 class="text-xl font-bold text-slate-800">Keine passenden Einträge</h3>
-            <p class="text-slate-500 max-w-xs mx-auto mt-2">Versuchen Sie Ihre Filter anzupassen, um weitere Möglichkeiten zu sehen.</p>
+            <p class="text-slate-500 max-w-xs mx-auto mt-2">Versuchen Sie Ihre Filter anzupassen.</p>
         </div>
 
     </main>
@@ -195,7 +191,7 @@
                 deadline: "2026-05-15", 
                 impact: "GESUNDHEIT", 
                 matchBullets: ["❤️ Psychosoziale Gesundheit", "🏃‍♂️ Prävention durch Bewegung", "🎯 Fokus: Inklusion"],
-                criteria: "Fokus auf Gesundheitsförderung vulnerabler Gruppen. Der partizipative Ansatz (Einbeziehung der Spieler in Planung) muss klar erkennbar sein.",
+                criteria: "Fokus auf Gesundheitsförderung vulnerabler Gruppen. Der partizipative Ansatz muss klar erkennbar sein.",
                 strategy: "Schwerpunkt auf die mentale Gesundheit setzen. Fußball ist hier das Mittel zum Zweck (Social Inclusion = Mental Health). Den wissenschaftlichen Aspekt der Prävention betonen.",
                 url: "https://fgoe.at/" 
             },
@@ -222,7 +218,7 @@
                 impact: "WACHSTUM", 
                 matchBullets: ["🌍 DACH-Expansion Fokus", "🤝 Barrierefreiheit", "💡 Soziale Innovation"],
                 criteria: "Projekt muss in Deutschland wirken oder über deutschen Partner laufen. Fokus auf Lebensqualität von Menschen mit Behinderung.",
-                strategy: "Schlüssel für den Markteintritt in Deutschland. Ein Kooperationsmodell mit einem deutschen Verein (z.B. FC St. Pauli oder Werder Bremen Inklusion) als Einreichbasis nutzen.",
+                strategy: "Schlüssel für den Markteintritt in Deutschland. Ein Kooperationsmodell mit einem deutschen Verein (z.B. FC St. Pauli) als Einreichbasis nutzen.",
                 url: "https://www.aktion-mensch.de/foerderung" 
             },
             { 
@@ -234,8 +230,8 @@
                 deadline: "2026-04-05", 
                 impact: "NETZWERK", 
                 matchBullets: ["🇪🇺 Grenzüberschreitend", "🏟 EU-Fußballnetzwerk", "🥇 Best-Practice Transfer"],
-                criteria: "Kooperation zwischen mindestens 3 Organisationen aus 3 EU-Ländern. Fokus auf soziale Inklusion und Chancengleichheit.",
-                strategy: "Projekt 'Unified Football Europe' starten. Partner aus Deutschland und Tschechien/Slowakei einbinden. Fokus auf Austausch der Trainingsmethoden und gemeinsame Turniere.",
+                criteria: "Kooperation zwischen mindestens 3 Organisationen aus 3 EU-Ländern. Fokus auf soziale Inklusion.",
+                strategy: "Projekt 'Unified Football Europe' starten. Partner aus Deutschland und Tschechien/Slowakei einbinden. Gemeinsame Turniere forcieren.",
                 url: "https://www.erasmusplus.at/de/sport" 
             },
             { 
@@ -247,8 +243,8 @@
                 deadline: "2026-06-30", 
                 impact: "PRESTIGE", 
                 matchBullets: ["🏅 Höchste Anerkennung", "📢 Massive PR-Wirkung", "👥 Vorbildfunktion"],
-                criteria: "Projekte, die Selbstbestimmung und Teilhabe fördern. Innovative Ansätze, die Barrieren in den Köpfen abbauen.",
-                strategy: "Spielerpass als 'Leuchtturm' präsentieren. Die Verbindung von Massensport Fußball mit Inklusion als Innovation verkaufen. Fokus auf die Testimonials der Spieler legen.",
+                criteria: "Projekte, die Selbstbestimmung und Teilhabe fördern. Innovative Ansätze, die Barrieren abbauen.",
+                strategy: "Spielerpass als 'Leuchtturm' präsentieren. Die Verbindung von Massensport Fußball mit Inklusion als Innovation verkaufen.",
                 url: "https://www.lebenshilfe.at/" 
             },
             { 
@@ -260,8 +256,8 @@
                 deadline: "2026-06-15", 
                 impact: "INNOVATION", 
                 matchBullets: ["🌐 Globale Sichtweite", "💡 Innovative Praxis", "📉 Skalierbares Modell"],
-                criteria: "Einreichung muss eine weltweit innovative Lösung im Bereich Inklusion darstellen. Schwerpunkt 2026: Freizeit, Sport & Community.",
-                strategy: "Sitz der Foundation ist Wien -> Heimvorteil. Antrag muss die Skalierbarkeit des Modells (Franchise-ähnlich für andere Länder) betonen. Daten zu Impact-Messung beifügen.",
+                criteria: "Weltweit innovative Lösung im Bereich Inklusion. Schwerpunkt 2026: Freizeit & Sport.",
+                strategy: "Sitz der Foundation ist Wien. Antrag muss die Skalierbarkeit des Modells (Franchise-ähnlich) betonen. Impact-Messung beifügen.",
                 url: "https://zeroproject.org/" 
             },
             { 
@@ -273,8 +269,8 @@
                 deadline: "2026-11-20", 
                 impact: "BUSINESS", 
                 matchBullets: ["💹 Professionalisierung", "🏢 B2B Inklusion", "🚀 Skalierungspotenzial"],
-                criteria: "Soziale Unternehmen mit tragfähigem Geschäftsmodell. Nachweis des gesellschaftlichen Mehrwerts und ökonomischer Überlebensfähigkeit.",
-                strategy: "Fokus auf das B2B-Modell: Inklusions-Workshops für Firmen-Teams. Diese Förderung hilft, das Team für den Vertrieb dieser Dienstleistung aufzubauen.",
+                criteria: "Soziale Unternehmen mit tragfähigem Geschäftsmodell. Nachweis des gesellschaftlichen Mehrwerts.",
+                strategy: "Fokus auf das B2B-Modell: Inklusions-Workshops für Firmen-Teams. Team für Vertrieb aufbauen.",
                 url: "https://www.aws.at/" 
             },
             { 
@@ -286,8 +282,8 @@
                 deadline: "2026-03-25", 
                 impact: "SPONSORING", 
                 matchBullets: ["🤝 CSR-Partnerschaften", "🎖 Nachhaltigkeits-Image", "🏢 Partner-Bindung"],
-                criteria: "Unternehmerische Sozialverantwortung. Es wird die Partnerschaft zwischen NGO und Wirtschaft bewertet.",
-                strategy: "Gemeinsam mit einem Hauptsponsor (z.B. UNIQA oder Allianz) einreichen. Das stärkt die Bindung zum Sponsor massiv und macht ihn zum stolzen Preisträger.",
+                criteria: "Unternehmerische Sozialverantwortung. Partnerschaft zwischen NGO und Wirtschaft.",
+                strategy: "Gemeinsam mit einem Hauptsponsor einreichen. Das stärkt die Bindung zum Sponsor massiv.",
                 url: "https://www.trigos.at/" 
             }
         ];
@@ -304,15 +300,16 @@
         }
 
         function setupFilterListeners() {
+            // Type Buttons (Refactored to avoid "stuck" white background)
             document.querySelectorAll('.filter-btn-type').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.filter-btn-type').forEach(b => {
                         b.classList.remove('bg-emerald-600', 'text-white', 'filter-btn-active', 'bg-amber-600', 'bg-slate-900', 'border-transparent');
-                        b.classList.add('bg-white', 'text-slate-600');
+                        b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
                     });
                     
                     const type = btn.getAttribute('data-type');
-                    btn.classList.remove('bg-white', 'text-slate-600');
+                    btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
                     
                     if (type === 'all') btn.classList.add('bg-slate-900', 'text-white', 'filter-btn-active', 'border-transparent');
                     else if (type === 'Förderung') btn.classList.add('bg-emerald-600', 'text-white', 'filter-btn-active', 'border-transparent');
@@ -323,15 +320,16 @@
                 });
             });
 
+            // Region Buttons (Refactored to avoid "stuck" white background)
             document.querySelectorAll('.filter-btn-region').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.filter-btn-region').forEach(b => {
                         b.classList.remove('bg-indigo-600', 'bg-red-600', 'bg-sky-600', 'bg-slate-900', 'text-white', 'filter-btn-active', 'border-transparent');
-                        b.classList.add('bg-white', 'text-slate-600');
+                        b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
                     });
 
                     const region = btn.getAttribute('data-region');
-                    btn.classList.remove('bg-white', 'text-slate-600');
+                    btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
                     
                     if (region === 'all') btn.classList.add('bg-slate-900', 'text-white', 'filter-btn-active', 'border-transparent');
                     else if (region === 'AT') btn.classList.add('bg-red-600', 'text-white', 'filter-btn-active', 'border-transparent');
@@ -343,6 +341,7 @@
                 });
             });
 
+            // Initial State
             document.querySelector('[data-type="all"]').click();
             document.querySelector('[data-region="all"]').click();
         }
@@ -431,7 +430,6 @@
                         <h3 class="text-xl font-extrabold text-slate-900 mb-2 leading-tight">${o.title}</h3>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-6">${o.provider}</p>
                         
-                        <!-- Frist Box -->
                         <div class="flex items-center text-sm mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                             <span class="mr-3 text-lg">📅</span>
                             <div class="flex flex-col">
@@ -440,7 +438,6 @@
                             </div>
                         </div>
 
-                        <!-- Match Kriterien -->
                         <div class="mb-8">
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Match-Kriterien:</p>
                             <ul class="space-y-3">
@@ -450,16 +447,14 @@
                             </ul>
                         </div>
 
-                        <!-- Impact Bereich (Pastell Orange) -->
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Impact-Bereich:</p>
                             <span class="inline-block text-[10px] bg-orange-100 text-orange-800 px-4 py-2 rounded-xl font-extrabold uppercase tracking-widest border border-orange-200 shadow-sm">${o.impact}</span>
                         </div>
                     </div>
                     
-                    <!-- Detail Section -->
                     <div class="p-8 pt-0 border-t border-slate-50">
-                        <button onclick="toggleCard(${o.id})" class="w-full mt-6 py-4 bg-white border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+                        <button onclick="toggleCard(${o.id})" class="w-full mt-6 py-4 bg-white border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 transition-all shadow-sm">
                             DETAILS ANSEHEN
                         </button>
                         
