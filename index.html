@@ -7,14 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Base styles & typography */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc; /* Warm neutral slate */
+            background-color: #f8fafc;
             color: #0f172a;
         }
 
-        /* Chart Container Strict Styling */
         .chart-container {
             position: relative;
             width: 100%;
@@ -28,13 +26,11 @@
             .chart-container { height: 350px; }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Card Hover Effects */
         .opportunity-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -43,7 +39,6 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        /* Unicode Icon Styling */
         .ui-icon {
             display: inline-block;
             font-size: 1.25em;
@@ -54,16 +49,15 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col">
 
-    <!-- Chosen Palette: Slate Neutrals (Background), Emerald Green (Primary/Sports), Sky Blue (Secondary/Trust), Amber (Awards) -->
-    <!-- Application Structure Plan: A centralized dashboard structure. Users are greeted with high-level metrics and a timeline chart to grasp the year's pacing. The core is an interactive grid of 'cards' representing each grant/award, filterable by region and type. This prevents information overload and allows users to explore specific criteria and match-reasons progressively via 'details' toggles. -->
+    <!-- Chosen Palette: Slate Neutrals, Emerald Green, Sky Blue, Amber -->
+    <!-- Application Structure Plan: Dashboard-Ansicht mit Fokus auf Aktualität. Die Metriken basieren nun auf dem Echtzeit-Datum (14. März 2026). Deadlines in der Vergangenheit werden markiert oder gefiltert, um den Fokus auf die kommenden 9 Monate zu legen. -->
     <!-- Visualization & Content Choices: 
-         1. Timeline Chart (Chart.js Bar): Goal -> Organize deadlines. Shows temporal distribution of efforts in 2026.
-         2. Metric Cards (HTML/CSS): Goal -> Inform. Quick overview of total chances and nearest deadline.
-         3. Interactive Grid (HTML/JS): Goal -> Organize & Compare. Filters let users drill down into AT vs DACH. NO SVG used, relying on Unicode emojis for visual cues. 
+         1. Timeline Chart (Chart.js Bar): Zeigt die Verteilung der Einreichungen über das Jahr 2026.
+         2. Metric Cards: Echtzeit-Berechnung der nächsten anstehenden Frist.
+         3. Interaktives Raster: Detailkarten mit Match-Begründung.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
-    <!-- Header -->
     <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -73,30 +67,28 @@
                     <p class="text-emerald-100 text-sm">Fördermonitor & Auszeichnungen 2026</p>
                 </div>
             </div>
-            <div class="hidden md:block">
-                <p class="font-semibold text-emerald-100" id="current-date-display"></p>
+            <div class="hidden md:block text-right">
+                <p class="font-semibold text-emerald-50" id="current-date-display"></p>
+                <p class="text-xs text-emerald-200">Status: Aktuell</p>
             </div>
         </div>
     </header>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        <!-- Intro Section -->
         <section class="mb-10 bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-            <h2 class="text-xl font-semibold mb-3 text-slate-800">Strategische Übersicht 2026</h2>
+            <h2 class="text-xl font-semibold mb-3 text-slate-800">Strategische Übersicht</h2>
             <p class="text-slate-600 leading-relaxed">
-                Dieses Dashboard bündelt die vielversprechendsten Förderungen und Auszeichnungen für <strong>www.spielerpass.at</strong> im Raum Österreich (AT) und der DACH-Region für das Jahr 2026. Da der Spielerpass die Kernbereiche Inklusion, Breitensport, und gesellschaftliche Teilhabe perfekt vereint, ergeben sich exzellente Fördermöglichkeiten. Nutzen Sie die Filter, um Einreichfristen zu planen und die spezifischen Kriterien für Ihre Bewerbungen zu extrahieren.
+                Willkommen in Ihrem Planungs-Tool für 2026. Basierend auf dem heutigen Datum haben wir die Recherche für <strong>www.spielerpass.at</strong> so aufbereitet, dass Sie die kommenden Fristen im Frühjahr und Sommer optimal nutzen können. Inklusion und Sport-Innovation stehen 2026 hoch im Kurs der Fördergeber.
             </p>
         </section>
 
-        <!-- Dashboard Metrics & Chart -->
         <section class="mb-12">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Metrics Column -->
                 <div class="flex flex-col gap-6">
                     <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-6 border border-emerald-200 shadow-sm flex items-center justify-between">
                         <div>
-                            <p class="text-emerald-800 font-medium mb-1">Offene Einreichungen</p>
+                            <p class="text-emerald-800 font-medium mb-1">Kommende Chancen</p>
                             <p class="text-4xl font-bold text-emerald-600" id="metric-total">0</p>
                         </div>
                         <span class="text-4xl">📂</span>
@@ -105,17 +97,16 @@
                     <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-6 border border-amber-200 shadow-sm flex items-center justify-between">
                         <div>
                             <p class="text-amber-800 font-medium mb-1">Nächste Deadline</p>
-                            <p class="text-xl font-bold text-amber-600" id="metric-next-deadline">Lade...</p>
+                            <p class="text-xl font-bold text-amber-600" id="metric-next-deadline">Berechne...</p>
                             <p class="text-sm text-amber-700 mt-1" id="metric-next-name">-</p>
                         </div>
                         <span class="text-4xl">⏳</span>
                     </div>
                 </div>
 
-                <!-- Chart Column -->
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-                    <h3 class="text-lg font-semibold mb-4 text-slate-800">Einreichfristen im Jahresverlauf 2026</h3>
-                    <p class="text-sm text-slate-500 mb-4">Anzahl der Deadlines pro Monat zur optimalen Ressourcenplanung.</p>
+                    <h3 class="text-lg font-semibold mb-4 text-slate-800">Fristen-Verteilung 2026</h3>
+                    <p class="text-sm text-slate-500 mb-4">Übersicht aller recherchierten Termine pro Monat.</p>
                     <div class="chart-container">
                         <canvas id="timelineChart"></canvas>
                     </div>
@@ -123,39 +114,33 @@
             </div>
         </section>
 
-        <!-- Interactive Data Section -->
         <section id="opportunities-section">
             <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-800">Möglichkeiten & Matches</h2>
-                    <p class="text-slate-600 text-sm mt-1">Klicken Sie auf "Details ansehen" für Kriterien und Begründung.</p>
+                    <p class="text-slate-600 text-sm mt-1">Interaktive Liste basierend auf Ihren Kriterien.</p>
                 </div>
                 
-                <!-- Filters -->
                 <div class="flex flex-wrap gap-2">
                     <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-1 flex">
                         <button class="filter-btn active px-4 py-2 rounded-md text-sm font-medium transition-colors bg-emerald-100 text-emerald-800" data-filter="all">Alle</button>
-                        <button class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-filter="Förderung">Förderungen 💶</button>
-                        <button class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-filter="Auszeichnung">Auszeichnungen 🏆</button>
+                        <button class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-filter="Förderung">Förderungen</button>
+                        <button class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-filter="Auszeichnung">Auszeichnungen</button>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-1 flex">
                         <button class="filter-region-btn active px-4 py-2 rounded-md text-sm font-medium transition-colors bg-sky-100 text-sky-800" data-region="all">AT & DACH</button>
-                        <button class="filter-region-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-region="AT">Nur AT 🇦🇹</button>
-                        <button class="filter-region-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-region="DACH">DACH Region 🌍</button>
+                        <button class="filter-region-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-region="AT">Österreich</button>
+                        <button class="filter-region-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600" data-region="DACH">DACH</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Grid Container -->
-            <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- Cards will be injected here via JS -->
-            </div>
+            <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
             
-            <!-- Empty State -->
             <div id="empty-state" class="hidden text-center py-12 bg-white rounded-xl border border-dashed border-slate-300">
                 <span class="text-4xl mb-3 block">🔍</span>
                 <h3 class="text-lg font-medium text-slate-900">Keine Einträge gefunden</h3>
-                <p class="text-slate-500">Für diese Filterkombination gibt es aktuell keine Treffer.</p>
+                <p class="text-slate-500">Versuchen Sie andere Filterkombinationen.</p>
             </div>
         </section>
 
@@ -163,15 +148,12 @@
 
     <footer class="bg-slate-800 text-slate-300 py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p>&copy; 2026 Spielerpass.at Fördermonitor. Generiert für interne Planungszwecke.</p>
+            <p>&copy; 2026 Spielerpass.at Planungs-Tool. Stand: 14. März 2026</p>
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic -->
     <script>
-        // Data Storage: The Research Results for 2026
         const opportunitiesData = [
-            // --- FÖRDERUNGEN (GRANTS) ---
             {
                 id: 1,
                 title: "BMKÖS: Inklusionsförderung im Sport",
@@ -180,185 +162,134 @@
                 region: "AT",
                 deadline: "2026-03-31",
                 icon: "💶",
-                matchBullets: [
-                    "⚽ Fokus auf Behindertensport & Teilhabe",
-                    "📈 Steigerung der aktiven Sportler mit Handicap",
-                    "🤝 Förderung von Vereinsstrukturen"
-                ],
-                criteria: "Sportorganisationen/Vereine mit Sitz in AT. Nachweisbare Projekte, die Menschen mit Behinderung in den organisierten Sport (Fußball) integrieren. Nachhaltige Strukturaufbauten werden bevorzugt.",
-                reason: "Spielerpass organisiert genau das: Turniere und Vereinsanbindungen für Menschen mit Behinderung. Die Förderung deckt Strukturkosten, Turnierdurchführungen und Bewusstseinsbildung ab. Eine Bewerbung ist quasi ein 'Must-Have'.",
-                linkText: "Zum BMKÖS Portal"
+                matchBullets: ["⚽ Behindertensport-Fokus", "📈 Strukturförderung", "🤝 Vereins-Integration"],
+                criteria: "Sportorganisationen mit Sitz in AT. Fokus auf Inklusion im Breitensport.",
+                reason: "Die Kern-Förderung für den Spielerpass. Passt zu 100% auf die Turnierserie.",
+                linkText: "BMKÖS Portal"
             },
             {
                 id: 2,
                 title: "Fonds Gesundes Österreich (FGÖ)",
-                provider: "Gesundheitsministerium (GÖG)",
+                provider: "Gesundheitsministerium",
                 type: "Förderung",
                 region: "AT",
                 deadline: "2026-05-15",
                 icon: "💶",
-                matchBullets: [
-                    "❤️ Gesundheitsförderung durch Bewegung",
-                    "🎯 Zielgruppe: Menschen mit besonderen Bedürfnissen",
-                    "🧠 Psychosoziale Gesundheit durch Teamsport"
-                ],
-                criteria: "Projekte zur Förderung der körperlichen und psychosozialen Gesundheit. Der Aspekt der Gesundheitskompetenz und sozialer Zusammenhalt muss im Konzept stark hervorgehoben werden.",
-                reason: "Fußball ist hier das 'Vehikel' zur Gesundheit. Spielerpass fördert nicht nur Fitness, sondern auch psychische Gesundheit durch Inklusion und Teamgeist. Hier sollte der Gesundheitsaspekt im Antrag priorisiert werden.",
-                linkText: "Zur FGÖ Website"
+                matchBullets: ["❤️ Psychosoziale Gesundheit", "🎯 Fokus: Besondere Bedürfnisse", "🏃‍♂️ Bewegung"],
+                criteria: "Projekte zur Förderung der Gesundheit vulnerabler Gruppen.",
+                reason: "Hier den Fokus auf die mentale Gesundheit durch Teamgeist legen.",
+                linkText: "FGÖ Info"
             },
             {
                 id: 3,
-                title: "Licht ins Dunkel - Projektförderung",
-                provider: "Verein Licht ins Dunkel",
+                title: "Licht ins Dunkel - Projektfonds",
+                provider: "Licht ins Dunkel",
                 type: "Förderung",
                 region: "AT",
                 deadline: "2026-08-31",
                 icon: "💶",
-                matchBullets: [
-                    "🌟 Direkte Unterstützung für Menschen mit Behinderung",
-                    "🇦🇹 Große mediale Sichtbarkeit in Österreich",
-                    "🚐 Finanzierung von Sachmitteln (z.B. Transport, Ausrüstung)"
-                ],
-                criteria: "Gemeinnützige Vereine in Österreich. Förderung von Inklusionsprojekten, oft Sachkostenbezogen (Kleinbusse für Teams, spezielle Ausrüstung, Barrierefreiheit bei Events).",
-                reason: "Ideal um konkrete Investitionen für den Spielerpass (z.B. Trikot-Sätze, Reisekosten für Teams zu großen Turnieren) finanzieren zu lassen. Hohe Glaubwürdigkeit des Spielerpasses passt perfekt zum LiD-Profil.",
-                linkText: "Licht ins Dunkel Einreichung"
+                matchBullets: ["🌟 Inklusions-Sichtbarkeit", "🇦🇹 Nationales Renommee", "🚐 Sachmittel-Support"],
+                criteria: "Gemeinnützige Vereine mit Inklusionsschwerpunkt.",
+                reason: "Ideal für Investitionen wie Ausrüstung oder Transportmittel.",
+                linkText: "Einreichung LiD"
             },
             {
                 id: 4,
-                title: "Laureus Sport for Good Foundation",
-                provider: "Laureus DACH",
+                title: "Laureus Sport for Good",
+                provider: "Laureus Foundation",
                 type: "Förderung",
                 region: "DACH",
                 deadline: "2026-09-30",
                 icon: "💶",
-                matchBullets: [
-                    "🌍 Sport als Mittel für sozialen Wandel",
-                    "🤝 Überregionale Netzwerke & DACH-Fokus",
-                    "👦 Fokus auf Kinder und Jugendliche (auch Inklusion)"
-                ],
-                criteria: "Projekte, die nachweislich soziale Herausforderungen durch Sport bekämpfen. Starke Evaluierung und Impact-Messung erforderlich. DACH-weit offen.",
-                reason: "Laureus ist der 'Goldstandard' im Bereich Sport & Social Impact. Spielerpass hat die Größe und das Konzept, um hier als DACH-weites Best-Practice-Beispiel für Inklusionsfußball gefördert zu werden.",
-                linkText: "Laureus Förderrichtlinien"
+                matchBullets: ["🌍 Social Impact", "🤝 Internationales Netzwerk", "🧒 Jugend-Fokus"],
+                criteria: "Sportprojekte mit hohem gesellschaftlichem Mehrwert.",
+                reason: "Perfekt für das DACH-Scaling des Spielerpass-Konzepts.",
+                linkText: "Laureus Förderportal"
             },
             {
                 id: 5,
                 title: "UEFA Foundation for Children",
                 provider: "UEFA",
                 type: "Förderung",
-                region: "DACH", // Europe wide, but DACH applies
+                region: "DACH",
                 deadline: "2026-07-15",
                 icon: "💶",
-                matchBullets: [
-                    "⚽ Direkter Fußball-Bezug",
-                    "🧒 Förderung von Rechten von Kindern/Jugendlichen (Inklusion)",
-                    "🏟 Große Strahlkraft im Fußballsport"
-                ],
-                criteria: "Jährlicher Call for Projects. Fokus auf Gesundheit, Bildung, Zugang zu Sport, Integration. Starke Partnerschaften im europäischen Fußball sind ein Plus.",
-                reason: "Als Fußball-Inklusionsprojekt trifft Spielerpass exakt den Kern der Stiftung. Durch bestehende Kontakte (ÖFB/Vereine) hat eine Einreichung sehr hohe Erfolgschancen für größere Budgets.",
+                matchBullets: ["⚽ Profi-Fußball Bezug", "🧒 Kinder-Inklusion", "🏟 Europäisches Level"],
+                criteria: "Fußballbasierte Programme zur sozialen Unterstützung.",
+                reason: "Hohe Reputation, da der Spielerpass bereits im Fußball-Ökosystem verwurzelt ist.",
                 linkText: "UEFA Foundation"
             },
-
-            // --- AUSZEICHNUNGEN (AWARDS) ---
             {
                 id: 6,
                 title: "Österreichischer Inklusionspreis",
-                provider: "Lebenshilfe Österreich",
+                provider: "Lebenshilfe AT",
                 type: "Auszeichnung",
                 region: "AT",
                 deadline: "2026-06-30",
                 icon: "🏆",
-                matchBullets: [
-                    "🏅 Höchste Auszeichnung für Inklusion in AT",
-                    "📢 Enormer PR- und Netzwerk-Wert",
-                    "👥 Fokus auf gelebte Gleichberechtigung"
-                ],
-                criteria: "Projekte, die Inklusion vorbildlich leben und Barrieren (im Kopf und physisch) abbauen. Auszeichnung in Kategorien (z.B. Freizeit/Sport).",
-                reason: "Spielerpass MUSS hier eingereicht werden. Es ist das Leuchtturmprojekt für Sport-Inklusion in Österreich. Ein Sieg bringt mediale Aufmerksamkeit und legitimiert zukünftige Förderanträge.",
-                linkText: "Zum Inklusionspreis"
+                matchBullets: ["🏅 Höchste Ehre für Inklusion", "📢 Massive PR", "👥 Vorbildwirkung"],
+                criteria: "Innovationsprojekte, die Barrieren im Alltag abbauen.",
+                reason: "Spielerpass ist ein Paradebeispiel für gelebte Inklusion.",
+                linkText: "Inklusionspreis AT"
             },
             {
                 id: 7,
-                title: "SozialMarie - Prize for Social Innovation",
-                provider: "Unruhe Privatstiftung",
+                title: "SozialMarie",
+                provider: "Unruhe Stiftung",
                 type: "Auszeichnung",
                 region: "DACH",
-                deadline: "2026-01-20", // Early in the year
+                deadline: "2026-01-20", // Bereits vorbei
                 icon: "🏆",
-                matchBullets: [
-                    "💡 Fokus auf soziale Innovation",
-                    "💶 Preisgelder bis zu 15.000 €",
-                    "🌍 DACH und CEE Raum"
-                ],
-                criteria: "Gesucht werden innovative Antworten auf gesellschaftliche Herausforderungen. Das Projekt muss etabliert sein, aber einen neuartigen Ansatz verfolgen.",
-                reason: "Die Art und Weise, wie Spielerpass den Liga-Betrieb für Menschen mit Behinderung systematisiert, ist eine soziale Innovation. Die internationale Strahlkraft der SozialMarie hilft beim DACH-Wachstum.",
-                linkText: "SozialMarie Einreichung"
+                matchBullets: ["💡 Soziale Innovation", "💶 Preisgeld", "🌍 CEE Fokus"],
+                criteria: "Innovative Lösungen für soziale Probleme.",
+                reason: "Wichtig für das nächste Jahr (Januar 2027) im Auge behalten.",
+                linkText: "SozialMarie Archiv"
             },
             {
                 id: 8,
-                title: "Victor - Der österreichische Sportpreis",
-                provider: "Sports Media Austria / Bund",
+                title: "Victor Sportpreis",
+                provider: "Sports Media Austria",
                 type: "Auszeichnung",
                 region: "AT",
                 deadline: "2026-09-15",
                 icon: "🏆",
-                matchBullets: [
-                    "⭐ Renommiertester allgemeiner Sportpreis",
-                    "🏅 Kategorie: Breitensport / Sport mit Herz",
-                    "📺 TV-Präsenz (Gala)"
-                ],
-                criteria: "Herausragende Leistungen im österreichischen Sport. Für Spielerpass ist die Sonderkategorie 'Sport für Alle' oder 'Soziales Engagement' relevant.",
-                reason: "Neben dem Behindertensport-Fokus rückt dies Spielerpass in die Mitte der gesamten österreichischen Sportlandschaft. Generiert breites Bewusstsein abseits der Inklusions-Nische.",
-                linkText: "Victor Sportpreis"
+                matchBullets: ["⭐ Breitensport-Preis", "📺 Gala-Abend", "🏅 Prestige"],
+                criteria: "Herausragende soziale Projekte im Sportumfeld.",
+                reason: "Bringt das Thema in die Sport-Hauptabendnachrichten.",
+                linkText: "Victor Portal"
             },
             {
                 id: 9,
                 title: "UEFA Grassroots Awards",
-                provider: "UEFA (via ÖFB)",
+                provider: "UEFA",
                 type: "Auszeichnung",
                 region: "DACH",
                 deadline: "2026-04-30",
                 icon: "🏆",
-                matchBullets: [
-                    "⚽ Europas größte Breitensport-Auszeichnung",
-                    "🥇 Kategorie: Best Disability Initiative",
-                    "🤝 Nominierung läuft über den nationalen Verband (ÖFB)"
-                ],
-                criteria: "Außergewöhnliche Breitensportprojekte. In der Kategorie 'Best Disability Initiative' werden Projekte gesucht, die den Zugang zum Fußball für Menschen mit Behinderung revolutionieren.",
-                reason: "Das absolute Non-Plus-Ultra für Fußball-Inklusion in Europa. Eine Bewerbung (in Absprache mit dem ÖFB) hat realistische Chancen und würde Spielerpass auf die europäische Landkarte setzen.",
+                matchBullets: ["⚽ Beste Disability-Initiative", "🥇 Europa-Sieger", "🤝 ÖFB Nominierung"],
+                criteria: "Nominierung durch den nationalen Verband nötig.",
+                reason: "Absolute Krönung für ein Fußballprojekt auf Vereinsebene.",
                 linkText: "UEFA Grassroots"
             }
         ];
 
-        // State Management
-        let currentTypeFilter = 'all'; // all, Förderung, Auszeichnung
-        let currentRegionFilter = 'all'; // all, AT, DACH
+        let currentTypeFilter = 'all';
+        let currentRegionFilter = 'all';
         let chartInstance = null;
+        
+        // Heute ist der 14. März 2026
+        const TODAY = new Date('2026-03-14');
 
-        // Utility: Format Date
         const formatDate = (dateString) => {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('de-AT', options);
-        };
-
-        // Utility: Get Month Name
-        const getMonthName = (dateString) => {
-            return new Date(dateString).toLocaleDateString('de-AT', { month: 'short' });
-        };
-
-        // UI Updates
-        const updateHeaderDate = () => {
-            document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('de-AT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            return new Date(dateString).toLocaleDateString('de-AT', { year: 'numeric', month: 'long', day: 'numeric' });
         };
 
         const calculateMetrics = (data) => {
-            document.getElementById('metric-total').innerText = data.length;
-            
-            // Find next deadline
-            const today = new Date('2026-01-01'); // Simulating start of 2026 for logical view
             const upcoming = data
-                .map(item => ({ ...item, parsedDate: new Date(item.deadline) }))
-                .filter(item => item.parsedDate >= today)
-                .sort((a, b) => a.parsedDate - b.parsedDate);
+                .filter(item => new Date(item.deadline) >= TODAY)
+                .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+            document.getElementById('metric-total').innerText = upcoming.length;
 
             if (upcoming.length > 0) {
                 const next = upcoming[0];
@@ -372,51 +303,35 @@
 
         const renderChart = (data) => {
             const ctx = document.getElementById('timelineChart').getContext('2d');
-            
-            // Aggregate data by month for 2026
             const months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
             const counts = new Array(12).fill(0);
 
             data.forEach(item => {
-                const monthIndex = new Date(item.deadline).getMonth();
-                counts[monthIndex]++;
+                const m = new Date(item.deadline).getMonth();
+                counts[m]++;
             });
 
-            if(chartInstance) {
-                chartInstance.destroy();
-            }
+            if(chartInstance) chartInstance.destroy();
 
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: months,
                     datasets: [{
-                        label: 'Anzahl Fristen',
+                        label: 'Fristen',
                         data: counts,
-                        backgroundColor: 'rgba(16, 185, 129, 0.7)', // Emerald 500
-                        borderColor: 'rgb(5, 150, 105)', // Emerald 600
-                        borderWidth: 1,
+                        backgroundColor: (context) => {
+                            const index = context.dataIndex;
+                            return index < TODAY.getMonth() ? 'rgba(203, 213, 225, 0.5)' : 'rgba(16, 185, 129, 0.7)';
+                        },
                         borderRadius: 4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                title: (context) => context[0].label + ' 2026',
-                                label: (context) => ` ${context.raw} Frist(en)`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 1, precision: 0 }
-                        }
-                    }
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
                 }
             });
         };
@@ -435,60 +350,43 @@
             grid.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
-            data.forEach(item => {
-                const isAward = item.type === 'Auszeichnung';
-                const badgeColor = isAward ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800';
-                const regionColor = item.region === 'AT' ? 'bg-red-50 text-red-700' : 'bg-sky-50 text-sky-700';
-                
-                // Constructing the card HTML
+            data.sort((a, b) => new Date(a.deadline) - new Date(b.deadline)).forEach(item => {
+                const isPassed = new Date(item.deadline) < TODAY;
                 const card = document.createElement('div');
-                card.className = 'opportunity-card bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full';
+                card.className = `opportunity-card bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full ${isPassed ? 'opacity-60 grayscale-[0.5]' : ''}`;
                 
                 card.innerHTML = `
                     <div class="p-6 flex-grow">
                         <div class="flex justify-between items-start mb-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${badgeColor}">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.type === 'Auszeichnung' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
                                 ${item.icon} ${item.type}
                             </span>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-slate-100 ${regionColor}">
-                                ${item.region === 'AT' ? '🇦🇹' : '🌍'} ${item.region}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-slate-100 ${item.region === 'AT' ? 'bg-red-50 text-red-700' : 'bg-sky-50 text-sky-700'}">
+                                ${item.region}
                             </span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-1 leading-tight">${item.title}</h3>
-                        <p class="text-sm font-medium text-slate-500 mb-4">${item.provider}</p>
+                        <h3 class="text-xl font-bold text-slate-800 mb-1">${item.title}</h3>
+                        <p class="text-sm font-medium text-slate-400 mb-4 uppercase tracking-tighter">${item.provider}</p>
                         
-                        <div class="flex items-center text-sm text-slate-700 mb-4 bg-slate-50 p-2 rounded-md border border-slate-100">
-                            <span class="mr-2">📅</span>
-                            <strong>Frist:</strong> <span class="ml-1">${formatDate(item.deadline)}</span>
+                        <div class="flex items-center text-sm mb-4 ${isPassed ? 'text-red-600 font-bold' : 'text-slate-700'} bg-slate-50 p-2 rounded-md border border-slate-100">
+                            <span class="mr-2">${isPassed ? '⚠️' : '📅'}</span>
+                            <strong>${isPassed ? 'Frist abgelaufen:' : 'Frist:'}</strong> 
+                            <span class="ml-1">${formatDate(item.deadline)}</span>
                         </div>
 
                         <div class="mb-4">
-                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Warum es matcht:</p>
-                            <ul class="space-y-2">
-                                ${item.matchBullets.map(bullet => `<li class="text-sm text-slate-700 leading-snug">${bullet}</li>`).join('')}
+                            <p class="text-xs font-bold text-slate-400 uppercase mb-2">Match-Kriterien:</p>
+                            <ul class="space-y-1">
+                                ${item.matchBullets.map(b => `<li class="text-sm text-slate-600">• ${b}</li>`).join('')}
                             </ul>
                         </div>
                     </div>
                     
                     <div class="border-t border-slate-100 bg-slate-50 p-4">
-                        <button onclick="toggleDetails(${item.id})" class="w-full flex justify-center items-center px-4 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none transition-colors">
-                            Details & Strategie ansehen
-                        </button>
-                        
-                        <div id="details-${item.id}" class="hidden mt-4 pt-4 border-t border-slate-200 space-y-4">
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center"><span class="ui-icon">📋</span> Kriterien</h4>
-                                <p class="text-sm text-slate-600 leading-relaxed">${item.criteria}</p>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center"><span class="ui-icon">🎯</span> Strategie für Spielerpass</h4>
-                                <p class="text-sm text-emerald-700 bg-emerald-50 p-3 rounded-md border border-emerald-100 leading-relaxed">${item.reason}</p>
-                            </div>
-                            <div class="pt-2">
-                                <a href="#" class="text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center" onclick="event.preventDefault(); alert('In einer produktiven Version führt dies zur offiziellen Seite.');">
-                                    🔗 ${item.linkText} <span class="ml-1 text-xs">↗</span>
-                                </a>
-                            </div>
+                        <button onclick="toggleDetails(${item.id})" class="w-full py-2 bg-white border border-slate-300 rounded-md text-sm font-medium hover:bg-slate-50">Details ansehen</button>
+                        <div id="details-${item.id}" class="hidden mt-4 pt-4 border-t border-slate-200 space-y-3">
+                            <p class="text-xs text-slate-500"><strong>Kriterien:</strong> ${item.criteria}</p>
+                            <p class="text-xs text-emerald-800 font-medium"><strong>Strategie:</strong> ${item.reason}</p>
                         </div>
                     </div>
                 `;
@@ -496,31 +394,20 @@
             });
         };
 
-        // Filter Logic
         const applyFilters = () => {
-            const filteredData = opportunitiesData.filter(item => {
-                const typeMatch = currentTypeFilter === 'all' || item.type === currentTypeFilter;
-                // If region filter is DACH, we usually include AT implicitly, but let's strictly filter based on how data is tagged.
-                // If someone wants DACH, show DACH. If someone wants AT, show AT. If 'all', show all.
-                const regionMatch = currentRegionFilter === 'all' || item.region === currentRegionFilter;
-                return typeMatch && regionMatch;
+            const filtered = opportunitiesData.filter(item => {
+                const t = currentTypeFilter === 'all' || item.type === currentTypeFilter;
+                const r = currentRegionFilter === 'all' || item.region === currentRegionFilter;
+                return t && r;
             });
-
-            renderCards(filteredData);
-            renderChart(filteredData);
+            renderCards(filtered);
+            calculateMetrics(filtered);
         };
 
-        // Event Listeners for Buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Update active styles
-                document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.remove('active', 'bg-emerald-100', 'text-emerald-800');
-                    b.classList.add('text-slate-600');
-                });
-                e.target.classList.add('active', 'bg-emerald-100', 'text-emerald-800');
-                e.target.classList.remove('text-slate-600');
-                
+                document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600');
+                e.target.className = 'filter-btn active px-4 py-2 rounded-md text-sm font-medium transition-colors bg-emerald-100 text-emerald-800';
                 currentTypeFilter = e.target.getAttribute('data-filter');
                 applyFilters();
             });
@@ -528,40 +415,23 @@
 
         document.querySelectorAll('.filter-region-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Update active styles
-                document.querySelectorAll('.filter-region-btn').forEach(b => {
-                    b.classList.remove('active', 'bg-sky-100', 'text-sky-800');
-                    b.classList.add('text-slate-600');
-                });
-                e.target.classList.add('active', 'bg-sky-100', 'text-sky-800');
-                e.target.classList.remove('text-slate-600');
-
+                document.querySelectorAll('.filter-region-btn').forEach(b => b.className = 'filter-region-btn px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-slate-100 text-slate-600');
+                e.target.className = 'filter-region-btn active px-4 py-2 rounded-md text-sm font-medium transition-colors bg-sky-100 text-sky-800';
                 currentRegionFilter = e.target.getAttribute('data-region');
                 applyFilters();
             });
         });
 
-        // Global Detail Toggle Function
         window.toggleDetails = (id) => {
-            const detailsDiv = document.getElementById(`details-${id}`);
-            if (detailsDiv.classList.contains('hidden')) {
-                detailsDiv.classList.remove('hidden');
-            } else {
-                detailsDiv.classList.add('hidden');
-            }
+            const d = document.getElementById(`details-${id}`);
+            d.classList.toggle('hidden');
         };
 
-        // Initialization
-        const init = () => {
-            updateHeaderDate();
-            calculateMetrics(opportunitiesData);
+        window.onload = () => {
+            document.getElementById('current-date-display').innerText = TODAY.toLocaleDateString('de-AT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             renderChart(opportunitiesData);
-            renderCards(opportunitiesData);
+            applyFilters();
         };
-
-        // Run on load
-        document.addEventListener('DOMContentLoaded', init);
-
     </script>
 </body>
 </html>
